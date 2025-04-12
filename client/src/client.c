@@ -1,4 +1,5 @@
 #include "client.h"
+#include <readline/readline.h>
 
 int main(void)
 {
@@ -7,7 +8,7 @@ int main(void)
 	int conexion;
 	char* ip;
 	char* puerto;
-	char* valor;
+	char* clave;
 
 	t_log* logger;
 	t_config* config;
@@ -15,7 +16,7 @@ int main(void)
 	/* ---------------- LOGGING ---------------- */
 
 	logger = iniciar_logger();
-
+	log_info(logger,"Hola! Soy un log");
 	// Usando el logger creado previamente
 	// Escribi: "Hola! Soy un log"
 
@@ -24,10 +25,14 @@ int main(void)
 
 	config = iniciar_config();
 
+	ip = config_get_string_value(config,"IP");
+	clave = config_get_string_value(config,"CLAVE");
+	puerto = config_get_string_value(config,"PUERTO");
 	// Usando el config creado previamente, leemos los valores del config y los 
 	// dejamos en las variables 'ip', 'puerto' y 'valor'
 
 	// Loggeamos el valor de config
+	log_info(logger,clave);
 
 
 	/* ---------------- LEER DE CONSOLA ---------------- */
@@ -54,15 +59,13 @@ int main(void)
 
 t_log* iniciar_logger(void)
 {
-	t_log* nuevo_logger;
-
+	t_log* nuevo_logger = log_create("tp0.log","Tp0",true,LOG_LEVEL_INFO);
 	return nuevo_logger;
 }
 
 t_config* iniciar_config(void)
 {
-	t_config* nuevo_config;
-
+	t_config* nuevo_config = config_create("cliente.config");
 	return nuevo_config;
 }
 
@@ -72,12 +75,13 @@ void leer_consola(t_log* logger)
 
 	// La primera te la dejo de yapa
 	leido = readline("> ");
-
+	char* asd="Valor ingresado: ";
+	char* ejemplor = strcat(asd,leido);
 	// El resto, las vamos leyendo y logueando hasta recibir un string vacío
-
+	log_info(logger,strcat("Valor ingresado: ",leido));
 
 	// ¡No te olvides de liberar las lineas antes de regresar!
-
+	free(leido);
 }
 
 void paquete(int conexion)
