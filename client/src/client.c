@@ -75,13 +75,16 @@ void leer_consola(t_log* logger)
 
 	// La primera te la dejo de yapa
 	leido = readline("> ");
-	char* asd="Valor ingresado: ";
-	char* ejemplor = strcat(asd,leido);
-	// El resto, las vamos leyendo y logueando hasta recibir un string vacío
-	log_info(logger,strcat("Valor ingresado: ",leido));
 
+	// El resto, las vamos leyendo y logueando hasta recibir un string vacío
+	while(strcmp(leido,"")){
+		log_info(logger,leido);
+		leido = readline("> ");
+	}
+	
 	// ¡No te olvides de liberar las lineas antes de regresar!
 	free(leido);
+	
 }
 
 void paquete(int conexion)
